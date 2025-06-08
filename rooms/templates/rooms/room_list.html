@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Rooms</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Room Number</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Price</th>
+            <th>Guests</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for room in rooms %}
+        <tr>
+            <td>{{ room.number }}</td>
+            <td>{{ room.room_type }}</td>
+            <td>
+                {% if room.status == 'available' %}
+                    <span class="badge bg-success">Available</span>
+                {% elif room.status == 'occupied' %}
+                    <span class="badge bg-danger">Occupied</span>
+                {% else %}
+                    <span class="badge bg-warning">Maintenance</span>
+                {% endif %}
+            </td>
+            <td>${{ room.price }}</td>
+            <td>
+                {% if room.guests.all %}
+                    <ul>
+                        {% for guest in room.guests.all %}
+                        <li>{{ guest.full_name }} (Check-in: {{ guest.check_in }})</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    No guests
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
